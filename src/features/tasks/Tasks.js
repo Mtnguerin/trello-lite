@@ -34,7 +34,7 @@ export function Tasks(props) {
           key={task.id}
           style={{
             visibility:
-              dragged && dragged.id === task.id ? "hidden" : "visible",
+              dragged && dragged.id === task.id ? "hidden" : "inherit",
           }}
           item
           xs={12}

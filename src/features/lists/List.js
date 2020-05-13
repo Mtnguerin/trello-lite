@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { editList } from "./listsSlice";
 import TitleButton from "../../components/ui/TitleButton";
 import TextFieldWhite from "../../components/ui/TextFieldWhite";
 import { Tasks } from "../tasks/Tasks";
+import { currentDragged, addToList, currentTasks } from "../tasks/tasksSlice";
 
 const useStyles = makeStyles((theme) => ({
   exist: {
@@ -20,7 +21,10 @@ const useStyles = makeStyles((theme) => ({
 export function List(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
+
   const [edit, setEdit] = useState(false);
+  const dragged = useSelector(currentDragged);
+  const tasks = useSelector(currentTasks(props.data.id));
   const [title, setTitle] = useState(props.data.title);
   const onValidate = (event) => {
       event.preventDefault();
@@ -31,10 +35,16 @@ export function List(props) {
           setTitle(props.data.title);
       }
   };
+  const onDragOver = () => {
+    if (dragged && tasks.length === 0) {
+      dispatch(addToList({id: dragged.id, list_id: props.data.id}))
+    }
+    props.onDragOver();
+  };
   return (
-    <Paper className={`${classes.exist}`}>
+    <Paper draggable={props.draggable} onDrag={props.onDrag} onDragEnd={props.onDragEnd} onDragOver={onDragOver} className={`${classes.exist}`}>
       {!edit ? (
-        <TitleButton onClick={() => setEdit(true)} onMouseDown={() => props.setDraggable(true)}  onMouseUp={() => props.setDraggable(false)} fullWidth disableRipple onDragStart={() => console.log("lol")}>{props.data.title}</TitleButton>
+        <TitleButton onClick={() => setEdit(true)} onMouseDown={() => props.setDraggable(true)} fullWidth disableRipple>{props.data.title}</TitleButton>
       ) : (
           <form onSubmit={onValidate}>
         <TitleButton fullWidth disableRipple>

@@ -1,6 +1,6 @@
 {
   "name": "trello-lite",
-  "homepage": "http://mtnguerin.github.io/trello-lite",
+  "homepage": "https://mtnguerin.github.io/trello-lite",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

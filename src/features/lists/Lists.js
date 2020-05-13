@@ -10,7 +10,7 @@ import { setDragged } from "../tasks/tasksSlice";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "inline-flex",
-    height: "100vh"
+    height: "100vh",
   },
   list: {
     width: 300,
@@ -35,31 +35,37 @@ export function Lists() {
     }
   };
   const onDragEnd = (event) => {
-    event.preventDefault();
     setDraggable(false);
     setDrag(null);
   };
-  const onDragStart = (list, event) => {
-    if (draggable) {
+  const onDrag = (list, event) => {
+    if (draggable && list !== drag) {
       setDrag(list);
     }
-  }
+  };
   const onDrop = () => {
     dispatch(setDragged({ task: null }));
-  }
+  };
   return (
-    <div onDragOver={(ev) => ev.preventDefault()} onDrop={onDrop} className={classes.root}>
+    <div
+      onDragOver={(ev) => ev.preventDefault()}
+      onDrop={onDrop}
+      className={classes.root}
+    >
       {lists.map((list) => (
         <div
           key={list.id}
           className={classes.list}
-          draggable={draggable}
-          onDragStart={(event) => onDragStart(list, event)}
-          onDragEnd={onDragEnd}
           style={{ visibility: drag === list ? "hidden" : "visible" }}
-          onDragOver={() => onDragOver(list)}
         >
-          <List data={list} setDraggable={setDraggable} />
+          <List
+            data={list}
+            draggable={draggable}
+            setDraggable={setDraggable}
+            onDrag={(event) => onDrag(list, event)}
+            onDragEnd={onDragEnd}
+            onDragOver={() => onDragOver(list)}
+          />
         </div>
       ))}
       <div className={classes.list}>

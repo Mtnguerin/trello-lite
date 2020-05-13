@@ -42,11 +42,16 @@ export const tasksSlice = createSlice({
         elementB.order = orderA;
       }
 
+    },
+    addToList: (state, {payload}) => {
+      const element = state.elements.find(element => element.id === payload.id)
+      element.list_id = payload.list_id;
+      element.order = 0;
     }
   },
 });
 
-export const { add, edit, changeOrder, setDragged } = tasksSlice.actions;
+export const { add, edit, changeOrder, setDragged, addToList } = tasksSlice.actions;
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
 // will call the thunk with the `dispatch` function as the first argument. Async
