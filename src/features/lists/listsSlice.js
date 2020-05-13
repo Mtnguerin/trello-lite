@@ -7,18 +7,24 @@ export const listsSlice = createSlice({
   },
   reducers: {
     add: (state, {payload}) => {
-      state.elements.push({id: id++, title: payload.title});
+      state.elements.push({id: id++, title: payload.title, order: state.elements.length});
     },
     edit: (state, {payload}) => {
-      console.log(payload.id)
-      console.log(state.elements.find(element => element.id === payload.id))
       let element = state.elements.find(element => element.id === payload.id)
       element.title = payload.title;
+    },
+    changeOrder: (state, {payload}) => {
+      let elementA = state.elements.find(element => element.id === payload.idA)
+      let elementB = state.elements.find(element => element.id === payload.idB)
+      let orderA = elementA.order;
+      let orderB = elementB.order;
+      elementA.order = orderB;
+      elementB.order = orderA;
     }
   },
 });
 
-export const { add, edit } = listsSlice.actions;
+export const { add, edit, changeOrder } = listsSlice.actions;
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
 // will call the thunk with the `dispatch` function as the first argument. Async
@@ -36,6 +42,13 @@ export const editList = (title, id) => dispatch => {
     resolve();
   });
 };
-export const currentLists = (state) => state.lists.elements;
+
+export const changeListOrder = (idA, idB) => dispatch => {
+  return new Promise((resolve, reject) => {
+    dispatch(changeOrder({idA, idB}));
+    resolve();
+  });
+};
+export const currentLists = (state) => state.lists.elements.slice().sort((a,b) => (a.order > b.order ? 1 : -1));
 
 export default listsSlice.reducer;

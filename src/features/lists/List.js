@@ -34,7 +34,7 @@ export function List(props) {
   return (
     <Paper className={`${classes.exist}`}>
       {!edit ? (
-        <TitleButton  onClick={() => setEdit(true)} fullWidth disableRipple>{props.data.title}</TitleButton>
+        <TitleButton onClick={() => setEdit(true)} onMouseDown={() => props.setDraggable(true)}  onMouseUp={() => props.setDraggable(false)} fullWidth disableRipple onDragStart={() => console.log("lol")}>{props.data.title}</TitleButton>
       ) : (
           <form onSubmit={onValidate}>
         <TitleButton fullWidth disableRipple>

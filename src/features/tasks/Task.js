@@ -31,9 +31,9 @@ export function Task(props) {
       }
   };
   return (
-    <Paper className={`${classes.exist}`}>
+    <Paper className={`${classes.exist}`} onDrag={props.onDrag} draggable={props.draggable} onDragOver={props.onDragOver} onDragEnd={props.onDragEnd}>
       {!edit ? (
-        <TitleButton  onClick={() => setEdit(true)} fullWidth disableRipple>{props.data.title}</TitleButton>
+        <TitleButton onClick={() => setEdit(true)} fullWidth disableRipple>{props.data.title}</TitleButton>
       ) : (
           <form onSubmit={onValidate}>
         <TitleButton fullWidth disableRipple>
