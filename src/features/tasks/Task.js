@@ -15,9 +15,9 @@ const useStyles = makeStyles((theme) => ({
     padding: 5,
   },
   firstLineTarget: {
-    width: "100%",
+    width: "95%",
     height: "1.75rem",
-    position: "absolute",
+    position: "absolute"
   },
 }));
 
@@ -53,13 +53,11 @@ export function Task(props) {
           fullWidth
           disableRipple
         >
-          <span>
-            <span
-              className={classes.firstLineTarget}
-              onDragOver={props.onDragOver}
-            ></span>
-            {props.data.title}
-          </span>
+          <span
+            className={classes.firstLineTarget}
+            onDragOver={props.onDragOver}
+          ></span>
+          {props.data.title}
         </TitleButton>
       ) : (
         <form onSubmit={onValidate}>
