@@ -44,7 +44,7 @@ export function List(props) {
   return (
     <Paper draggable={props.draggable} onDrag={props.onDrag} onDragEnd={props.onDragEnd} onDragOver={onDragOver} className={`${classes.exist}`}>
       {!edit ? (
-        <TitleButton onClick={() => setEdit(true)} onMouseDown={() => props.setDraggable(true)} fullWidth disableRipple>{props.data.title}</TitleButton>
+        <TitleButton onClick={() => setEdit(true)} onMouseDown={() => props.setDraggable(true)} onMouseUp={() => props.setDraggable(false)} fullWidth disableRipple>{props.data.title}</TitleButton>
       ) : (
           <form onSubmit={onValidate}>
         <TitleButton fullWidth disableRipple>

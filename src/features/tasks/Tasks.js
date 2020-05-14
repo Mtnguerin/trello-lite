@@ -13,6 +13,7 @@ export function Tasks(props) {
   const [isChangingOrder, setIsChangingOrder] = useState(false);
   const onDragOver = (task, event) => {
     event.preventDefault();
+    console.log("dragOver")
     if (dragged && task && dragged.id !== task.id && !isChangingOrder) {
       setIsChangingOrder(true);
       dispatch(changeTaskOrder(dragged.id, task.id)).then(() => {
@@ -42,7 +43,6 @@ export function Tasks(props) {
           <Task
             data={task}
             onDrag={(event) => onDrag(task)}
-            draggable
             onDragOver={(event) => onDragOver(task, event)}
             onDragEnd={onDragEnd}
           />

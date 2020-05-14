@@ -9,10 +9,15 @@ const useStyles = makeStyles((theme) => ({
   exist: {
     color: theme.palette.text.primary,
     background: "white",
-    display: "block"
+    display: "block",
   },
   listForm: {
     padding: 5,
+  },
+  firstLineTarget: {
+    width: "100%",
+    height: "1.75rem",
+    position: "absolute",
   },
 }));
 
@@ -20,31 +25,53 @@ export function Task(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [edit, setEdit] = useState(false);
+  const [draggable, setDraggable] = useState(false);
   const [title, setTitle] = useState(props.data.title);
   const onValidate = (event) => {
-      event.preventDefault();
-      if (title.trim() !== "")
-      dispatch(editTask(title, props.list, props.data.id)).then(() => setEdit(false));
-      else {
-          setEdit(false);
-          setTitle(props.data.title);
-      }
+    event.preventDefault();
+    if (title.trim() !== "")
+      dispatch(editTask(title, props.list, props.data.id)).then(() =>
+        setEdit(false)
+      );
+    else {
+      setEdit(false);
+      setTitle(props.data.title);
+    }
   };
   return (
-    <Paper className={`${classes.exist}`} onDrag={props.onDrag} draggable={props.draggable} onDragOver={props.onDragOver} onDragEnd={props.onDragEnd}>
+    <Paper
+      className={`${classes.exist}`}
+      onDrag={props.onDrag}
+      draggable={draggable}
+      onDragEnd={props.onDragEnd}
+    >
       {!edit ? (
-        <TitleButton onClick={() => setEdit(true)} fullWidth disableRipple>{props.data.title}</TitleButton>
-      ) : (
-          <form onSubmit={onValidate}>
-        <TitleButton fullWidth disableRipple>
-          <TextFieldWhite
-            autoFocus
-            onBlur={onValidate}
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            onSubmit={onValidate}
-                      />
+        <TitleButton
+          onClick={() => setEdit(true)}
+          onMouseDown={() => setDraggable(true)}
+          onMouseUp={() => setDraggable(false)}
+          fullWidth
+          disableRipple
+        >
+          <span>
+            <span
+              className={classes.firstLineTarget}
+              onDragOver={props.onDragOver}
+            ></span>
+            {props.data.title}
+          </span>
         </TitleButton>
+      ) : (
+        <form onSubmit={onValidate}>
+          <TitleButton fullWidth disableRipple>
+            <TextFieldWhite
+              autoFocus
+              onBlur={onValidate}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              onSubmit={onValidate}
+            />
+          </TitleButton>
         </form>
       )}
     </Paper>

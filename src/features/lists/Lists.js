@@ -48,7 +48,7 @@ export function Lists() {
   };
   return (
     <div
-      onDragOver={(ev) => ev.preventDefault()}
+      onDragOver={(ev) => {ev.preventDefault()}}
       onDrop={onDrop}
       className={classes.root}
     >
